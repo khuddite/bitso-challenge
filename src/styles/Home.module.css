@@ -28,6 +28,11 @@
   flex-grow: 1;
 }
 
+.logoName {
+  margin: 3rem 0;
+  font-size: 1.5rem;
+}
+
 .title a {
   color: #0d76fc;
   text-decoration: none;
