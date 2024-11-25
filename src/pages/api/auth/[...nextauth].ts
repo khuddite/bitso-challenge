@@ -49,14 +49,6 @@ export default async function auth(req: any, res: any) {
     }),
   ];
 
-  const isDefaultSigninPage =
-    req.method === "GET" && req.query.nextauth.includes("signin");
-
-  // Hide Sign-In with Ethereum from default sign page
-  if (isDefaultSigninPage) {
-    providers.pop();
-  }
-
   return await NextAuth(req, res, {
     // https://next-auth.js.org/configuration/providers/oauth
     providers,
@@ -65,12 +57,20 @@ export default async function auth(req: any, res: any) {
     },
     secret: process.env.NEXTAUTH_SECRET,
     callbacks: {
-      async session({ session, token }: { session: any; token: any }) {
+      async session({ session, token }) {
         session.address = token.sub;
         session.user.name = token.sub;
-        session.user.image = "https://www.fillmurray.com/128/128";
         return session;
       },
     },
   });
+}
+
+declare module "next-auth" {
+  interface Session {
+    address?: string;
+    user: {
+      name?: string;
+    };
+  }
 }

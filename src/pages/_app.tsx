@@ -16,7 +16,7 @@ import type { Session } from "next-auth";
 const client = new QueryClient();
 
 const getSiweMessageOptions: GetSiweMessageOptions = () => ({
-  statement: "Sign in Bitso Token Manager",
+  statement: "Sign into Bitso Token Manager",
 });
 
 function MyApp({ Component, pageProps }: AppProps<{ session: Session }>) {
