@@ -10,18 +10,16 @@ import {
 } from "@nextui-org/react";
 import { abi } from "../../constants/abi";
 import React, { useMemo } from "react";
-import {
-  useAccount,
-  usePrepareTransactionRequest,
-  useReadContract,
-} from "wagmi";
+import { useAccount, useReadContract } from "wagmi";
 import { KHUDDITE_TOKEN_ADDRESS } from "../../constants/token";
 import { formatUnits } from "viem";
 import Image from "next/image";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useSession } from "next-auth/react";
 
 export default function BitsoWidget() {
   const { address } = useAccount();
+
   const { data: decimals, isLoading: isLoadingDecimals } = useReadContract({
     abi,
     address: KHUDDITE_TOKEN_ADDRESS,
@@ -76,6 +74,7 @@ export default function BitsoWidget() {
     >
       <CardHeader className="flex flex-col items-end p-0 gap-2">
         <ConnectButton showBalance={false} />
+
         <a
           href="https://bitso.com/"
           target="_blank"
