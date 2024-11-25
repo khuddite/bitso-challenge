@@ -12,6 +12,7 @@ import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { SessionProvider } from "next-auth/react";
 import { config } from "../wagmi";
 import type { Session } from "next-auth";
+import { NextUIProvider } from "@nextui-org/react";
 
 const client = new QueryClient();
 
@@ -28,7 +29,9 @@ function MyApp({ Component, pageProps }: AppProps<{ session: Session }>) {
             getSiweMessageOptions={getSiweMessageOptions}
           >
             <RainbowKitProvider>
-              <Component {...pageProps} />
+              <NextUIProvider>
+                <Component {...pageProps} />
+              </NextUIProvider>
             </RainbowKitProvider>
           </RainbowKitSiweNextAuthProvider>
         </QueryClientProvider>
