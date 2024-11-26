@@ -12,12 +12,8 @@ import {
   useReadContract,
   useWriteContract,
 } from "wagmi";
-import { abi } from "../../../constants/abi";
 import { UNAVAILABLE } from "../../../constants/strings";
-import {
-  KHUDDITE_TOKEN_ADDRESS,
-  khudditeTokenContract,
-} from "../../../constants/token";
+import { khudditeTokenContract } from "../../../constants/token";
 import useContractGas from "../../../hooks/useContractGas";
 import useEthPrice from "../../../hooks/useEthPrice";
 import { TransactionDetail } from "../../../pages/dashboard";
@@ -65,7 +61,7 @@ export default function ConfirmTransactionForm({
     error: ethPriceError,
   } = useEthPrice();
 
-  // estimate contract gas
+  // estimate contract gas for token transfer
   const {
     data: contractGas,
     isLoading: isLoadingContractGas,
@@ -89,6 +85,7 @@ export default function ConfirmTransactionForm({
     if (isLoading) {
       return;
     }
+    // display error toasts if any
     if (errors.length > 0) {
       errors.map((err) => toast.error(err.message));
       return;
@@ -106,8 +103,7 @@ export default function ConfirmTransactionForm({
 
   const handleConfirmTransaction = () => {
     writeContract({
-      abi,
-      address: KHUDDITE_TOKEN_ADDRESS,
+      ...khudditeTokenContract,
       functionName: "transfer",
       args: [to, parseUnits(value, decimals as number)],
     });
@@ -148,7 +144,7 @@ export default function ConfirmTransactionForm({
             target="_blank"
             href={`${sepolia.blockExplorers.default.url}/address/${to}`}
           >
-            {address}
+            {to}
           </Link>
         </div>
         <div className="flex flex-col items-center">

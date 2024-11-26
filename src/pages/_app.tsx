@@ -1,22 +1,22 @@
-import "../styles/globals.css";
-import "@rainbow-me/rainbowkit/styles.css";
-import type { AppProps } from "next/app";
 import {
   GetSiweMessageOptions,
   RainbowKitSiweNextAuthProvider,
 } from "@rainbow-me/rainbowkit-siwe-next-auth";
+import "@rainbow-me/rainbowkit/styles.css";
+import type { AppProps } from "next/app";
+import "../styles/globals.css";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { WagmiProvider } from "wagmi";
-import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { SessionProvider } from "next-auth/react";
-import { config } from "../wagmi";
-import type { Session } from "next-auth";
 import { NextUIProvider } from "@nextui-org/react";
-import { ReactElement, ReactNode } from "react";
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NextPage } from "next";
+import type { Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
+import { ReactElement, ReactNode } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { WagmiProvider } from "wagmi";
+import { config } from "../wagmi";
 
 const client = new QueryClient();
 

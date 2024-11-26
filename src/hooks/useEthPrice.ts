@@ -6,6 +6,7 @@ const useEthPrice = () => {
   return useQuery({
     queryKey: [ETH_PRICE_IN_USD],
     queryFn: async () => {
+      // fetch ETH price in USD from coingecko
       const response = await fetch(
         "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
       );
