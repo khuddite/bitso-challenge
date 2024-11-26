@@ -5,7 +5,7 @@ const schema = z.object({
   currentBalance: z.string(),
   address: z.string(),
   to: z.string().min(1, { message: "Recipient address is required." }),
-  value: z.number().gt(0, { message: "Amount must be greater than 0." }),
+  value: z.string().min(1, { message: "Amount is required." }),
 });
 
 export default schema;

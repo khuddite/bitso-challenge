@@ -1,4 +1,5 @@
 import { Input } from "@nextui-org/input";
+import type { InputProps } from "@nextui-org/input";
 import React from "react";
 import {
   FieldValues,
@@ -12,13 +13,15 @@ interface BitsoInputProps {
 }
 
 type RhfBitsoInputProps<T extends FieldValues> = BitsoInputProps &
-  UseControllerProps<T>;
+  UseControllerProps<T> &
+  InputProps;
 
 export default function BitsoInput<T extends FieldValues>({
   name,
   control,
   useValidationSpacer = false,
   helpText,
+  readOnly,
   ...rest
 }: RhfBitsoInputProps<T>) {
   const {
@@ -30,12 +33,26 @@ export default function BitsoInput<T extends FieldValues>({
   });
 
   return (
-    <Input
-      variant="faded"
-      color="primary"
-      labelPlacement="outside"
-      {...rest}
-      {...(!!name && fieldProps)}
-    />
+    <>
+      <Input
+        variant="bordered"
+        color={readOnly ? "secondary" : !!error ? "danger" : "primary"}
+        labelPlacement="inside"
+        size="sm"
+        readOnly={readOnly}
+        {...rest}
+        {...(!!name && fieldProps)}
+      />
+
+      {!readOnly && (
+        <div className="h-5 mt-1 ml-2">
+          {!!error && (
+            <p className="font-semibold text-red-700 text-tiny">
+              {error.message}
+            </p>
+          )}
+        </div>
+      )}
+    </>
   );
 }

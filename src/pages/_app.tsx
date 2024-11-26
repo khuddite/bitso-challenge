@@ -13,6 +13,10 @@ import { SessionProvider } from "next-auth/react";
 import { config } from "../wagmi";
 import type { Session } from "next-auth";
 import { NextUIProvider } from "@nextui-org/react";
+import { ReactElement, ReactNode } from "react";
+import { NextPage } from "next";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const client = new QueryClient();
 
@@ -20,7 +24,21 @@ const getSiweMessageOptions: GetSiweMessageOptions = () => ({
   statement: "Sign into Bitso Token Manager",
 });
 
-function MyApp({ Component, pageProps }: AppProps<{ session: Session }>) {
+export type NextPageWithLayout<P = {}> = NextPage<P> & {
+  // You can disable whichever you don't need
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+export type AppPropsWithLayout<T> = AppProps<T> & {
+  Component: NextPageWithLayout;
+};
+
+function MyApp({
+  Component,
+  pageProps,
+}: AppPropsWithLayout<{ session: Session }>) {
+  const getLayout = Component.getLayout ?? ((page) => page);
+
   return (
     <WagmiProvider config={config}>
       <SessionProvider refetchInterval={0} session={pageProps.session}>
@@ -30,7 +48,8 @@ function MyApp({ Component, pageProps }: AppProps<{ session: Session }>) {
           >
             <RainbowKitProvider>
               <NextUIProvider>
-                <Component {...pageProps} />
+                <ToastContainer />
+                {getLayout(<Component />)}
               </NextUIProvider>
             </RainbowKitProvider>
           </RainbowKitSiweNextAuthProvider>
