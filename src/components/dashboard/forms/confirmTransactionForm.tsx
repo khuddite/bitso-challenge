@@ -3,7 +3,7 @@ import { Link } from "@nextui-org/link";
 import { Skeleton } from "@nextui-org/skeleton";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { formatUnits, parseUnits } from "viem";
+import { formatEther, parseGwei, parseUnits } from "viem";
 import { sepolia } from "viem/chains";
 import {
   useAccount,
@@ -38,7 +38,7 @@ export default function ConfirmTransactionForm({
 
   const [gasFee, setGasFee] = useState(UNAVAILABLE);
 
-  // fetch gas price
+  // fetch base fee per gass
   const {
     data: gasPrice,
     isLoading: isLoadingGasPrice,
@@ -97,10 +97,10 @@ export default function ConfirmTransactionForm({
       );
     }
 
+    // hard-code max priority fee per gas (1.5 gwei)
     setGasFee(
-      formatUnits(
-        (gasPrice as bigint) * (contractGas as bigint),
-        decimals as number
+      formatEther(
+        (contractGas as bigint) * ((gasPrice as bigint) + parseGwei("1.5"))
       )
     );
   }, [isLoading, errors]);
@@ -165,7 +165,7 @@ export default function ConfirmTransactionForm({
                     undefined,
                     {
                       style: "decimal",
-                      maximumFractionDigits: 6,
+                      maximumFractionDigits: 2,
                     }
                   ).format(Number(gasFee) * (ethPrice as number))} USD`}
             </p>
