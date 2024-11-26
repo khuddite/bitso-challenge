@@ -90,19 +90,18 @@ export default function ConfirmTransactionForm({
       return;
     }
     if (errors.length > 0) {
-      errors.map((err) =>
-        toast.error(err.message, {
-          position: "top-right",
-        })
-      );
+      errors.map((err) => toast.error(err.message));
+      return;
     }
 
-    // hard-code max priority fee per gas (1.5 gwei)
-    setGasFee(
-      formatEther(
-        (contractGas as bigint) * ((gasPrice as bigint) + parseGwei("1.5"))
-      )
-    );
+    if (typeof contractGas === "bigint" && typeof gasPrice === "bigint") {
+      // hard-code max priority fee per gas (1.5 gwei)
+      setGasFee(
+        formatEther(
+          (contractGas as bigint) * ((gasPrice as bigint) + parseGwei("1.5"))
+        )
+      );
+    }
   }, [isLoading, errors]);
 
   const handleConfirmTransaction = () => {
@@ -123,7 +122,7 @@ export default function ConfirmTransactionForm({
       toast.success(`Sent ${value}KT successfully!`);
       onCancel();
     } else if (status === "error") {
-      toast.error(transactionError.message, { position: "top-right" });
+      toast.error(transactionError.message);
     }
   }, [status]);
 
