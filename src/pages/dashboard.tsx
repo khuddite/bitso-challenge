@@ -1,9 +1,8 @@
 import { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import styles from "../styles/Dashboard.module.css";
 
-import BitsoWidget from "../components/dashboard/BitsoWidget";
+import BitsoWidget from "../components/dashboard/bitsoWidget/bitsoWidget";
 const Dashboard: NextPage = () => {
   const { status } = useSession();
   const router = useRouter();
@@ -12,10 +11,8 @@ const Dashboard: NextPage = () => {
   }
 
   return (
-    <div>
-      <main className={styles.main}>
-        <BitsoWidget />
-      </main>
+    <div className="h-screen flex justify-center items-center w-full">
+      <BitsoWidget />
     </div>
   );
 };
