@@ -1,9 +1,9 @@
-import { NextPageWithLayout } from "./_app";
-import DashboardLayout from "../components/dashboard/layout";
-import SendTransactionForm from "../components/dashboard/sendTransactionForm";
 import { useState } from "react";
-import ConfirmTransactionForm from "../components/dashboard/confirmTransactionForm";
 import { Address } from "viem";
+import ConfirmTransactionForm from "../components/dashboard/forms/confirmTransactionForm";
+import SendTransactionForm from "../components/dashboard/forms/sendTransactionForm";
+import DashboardLayout from "../components/dashboard/layout";
+import { NextPageWithLayout } from "./_app";
 
 export type TransactionDetail = {
   to: Address;

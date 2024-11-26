@@ -7,11 +7,12 @@ import { toast } from "react-toastify";
 import { formatUnits, isAddress } from "viem";
 import { useAccount, useReadContracts } from "wagmi";
 import { z } from "zod";
-import { UNAVAILABLE } from "../../constants/strings";
-import { khudditeTokenContract } from "../../constants/token";
-import { TransactionDetail } from "../../pages/dashboard";
-import BitsoInput from "../shared/BitsoInput";
-import transactionSchema from "./transactionSchema";
+import { UNAVAILABLE } from "../../../constants/strings";
+import { khudditeTokenContract } from "../../../constants/token";
+import { TransactionDetail } from "../../../pages/dashboard";
+import BitsoInput from "../../shared/bitsoInput";
+import transactionSchema from "./sendTransactionSchema";
+
 type TransactionoData = z.infer<typeof transactionSchema>;
 
 type SendTransactionFormProps = {
@@ -66,7 +67,6 @@ export default function SendTransactionForm({
 
   const [curBalance, setCurBalance] = useState(UNAVAILABLE);
   const [tokenSymbol, setTokenSymbol] = useState(UNAVAILABLE);
-  const [totalSupply, setTotalSupply] = useState(UNAVAILABLE);
 
   useEffect(() => {
     if (isLoading) return;
@@ -101,8 +101,8 @@ export default function SendTransactionForm({
 
     setCurBalance(currentBalance);
     reset({
-      totalSupply,
-      currentBalance,
+      totalSupply: `${totalSupply} ${tokenSymbol}`,
+      currentBalance: `${currentBalance} ${tokenSymbol}`,
       address,
       to: "",
       value: "",
@@ -155,7 +155,6 @@ export default function SendTransactionForm({
           name="totalSupply"
           control={control}
           label="Total Supply"
-          value={`${totalSupply} ${tokenSymbol}`}
           readOnly
         />
       </Skeleton>
@@ -192,7 +191,7 @@ export default function SendTransactionForm({
         />
       </Skeleton>
       <Button
-        variant="shadow"
+        variant="solid"
         color="primary"
         isLoading={isLoading}
         size="md"

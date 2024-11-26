@@ -12,15 +12,15 @@ import {
   useReadContract,
   useWriteContract,
 } from "wagmi";
-import { abi } from "../../constants/abi";
-import { UNAVAILABLE } from "../../constants/strings";
+import { abi } from "../../../constants/abi";
+import { UNAVAILABLE } from "../../../constants/strings";
 import {
   KHUDDITE_TOKEN_ADDRESS,
   khudditeTokenContract,
-} from "../../constants/token";
-import useContractGas from "../../hooks/useContractGas";
-import useEthPrice from "../../hooks/useEthPrice";
-import { TransactionDetail } from "../../pages/dashboard";
+} from "../../../constants/token";
+import useContractGas from "../../../hooks/useContractGas";
+import useEthPrice from "../../../hooks/useEthPrice";
+import { TransactionDetail } from "../../../pages/dashboard";
 
 type ConfirmTransactionFormProps = {
   onCancel: () => void;
@@ -174,7 +174,7 @@ export default function ConfirmTransactionForm({
       </div>
       <div className="flex flex-row w-full gap-2">
         <Button
-          variant="bordered"
+          variant="ghost"
           color="secondary"
           onClick={onCancel}
           disabled={isSubmittingTransaction}
@@ -183,7 +183,7 @@ export default function ConfirmTransactionForm({
           Cancel
         </Button>
         <Button
-          variant="flat"
+          variant="solid"
           color="primary"
           onClick={handleConfirmTransaction}
           isLoading={isSubmittingTransaction}
