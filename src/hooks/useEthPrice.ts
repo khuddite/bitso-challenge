@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 const ETH_PRICE_IN_USD = "ethPriceInUsd";

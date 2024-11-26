@@ -1,6 +1,5 @@
-import { Input } from "@nextui-org/input";
 import type { InputProps } from "@nextui-org/input";
-import React from "react";
+import { Input } from "@nextui-org/input";
 import {
   FieldValues,
   useController,

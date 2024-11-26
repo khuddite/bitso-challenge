@@ -1,20 +1,17 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/button";
 import { Skeleton } from "@nextui-org/skeleton";
-import React, { useEffect, useMemo } from "react";
-import { formatUnits } from "viem";
-import { KHUDDITE_TOKEN_ADDRESS } from "../../constants/token";
-import { useAccount, useReadContract } from "wagmi";
-import { abi } from "../../constants/abi";
-import useReadKhudditeToken from "../../hooks/useReadKhudditeToken";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import transactionSchema from "./transactionSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import BitsoInput from "../shared/BitsoInput";
-import { z } from "zod";
-import { isAddress } from "viem";
-import { TransactionDetail } from "../../pages/dashboard";
 import { toast } from "react-toastify";
-
+import { formatUnits, isAddress } from "viem";
+import { useAccount, useReadContracts } from "wagmi";
+import { z } from "zod";
+import { UNAVAILABLE } from "../../constants/strings";
+import { khudditeTokenContract } from "../../constants/token";
+import { TransactionDetail } from "../../pages/dashboard";
+import BitsoInput from "../shared/BitsoInput";
+import transactionSchema from "./transactionSchema";
 type TransactionoData = z.infer<typeof transactionSchema>;
 
 type SendTransactionFormProps = {
@@ -42,73 +39,75 @@ export default function SendTransactionForm({
   const { address } = useAccount();
 
   const {
-    data: decimals,
-    isLoading: isLoadingDecimals,
-    isError: isErrorDecimals,
-  } = useReadKhudditeToken({
-    functionName: "decimals",
+    data: token,
+    isLoading,
+    error,
+  } = useReadContracts({
+    contracts: [
+      {
+        ...khudditeTokenContract,
+        functionName: "decimals",
+      },
+      {
+        ...khudditeTokenContract,
+        functionName: "symbol",
+      },
+      {
+        ...khudditeTokenContract,
+        functionName: "totalSupply",
+      },
+      {
+        ...khudditeTokenContract,
+        functionName: "balanceOf",
+        args: [address],
+      },
+    ],
   });
 
-  const {
-    data: tokenSymbol,
-    isLoading: isLoadingSymbol,
-    isError: isErrorSymbol,
-  } = useReadKhudditeToken({
-    functionName: "symbol",
-  });
-
-  const {
-    data: totalRawSupply,
-    isLoading: isLoadingTotalSupply,
-    isError: isErrorTotalSupply,
-  } = useReadKhudditeToken({
-    functionName: "totalSupply",
-  });
-
-  const {
-    data: rawBalance,
-    isLoading: isLoadingRawBalance,
-    isError: isErrorRawBalance,
-  } = useReadKhudditeToken({
-    functionName: "balanceOf",
-    args: [address],
-  });
-
-  const currentBalance = useMemo(() => {
-    if (typeof rawBalance !== "bigint" || typeof decimals !== "number") {
-      return "0";
-    }
-    return formatUnits(rawBalance as bigint, decimals as number);
-  }, [rawBalance, decimals]);
-
-  const totalSupply = useMemo(() => {
-    if (typeof totalRawSupply !== "bigint" || typeof decimals !== "number") {
-      return "0";
-    }
-    return formatUnits(totalRawSupply as bigint, decimals as number);
-  }, [totalRawSupply, decimals]);
-
-  const isLoading =
-    isLoadingDecimals ||
-    isLoadingRawBalance ||
-    isLoadingSymbol ||
-    isLoadingTotalSupply;
-
-  const isError =
-    isErrorDecimals || isErrorRawBalance || isErrorSymbol || isErrorTotalSupply;
+  const [curBalance, setCurBalance] = useState(UNAVAILABLE);
+  const [tokenSymbol, setTokenSymbol] = useState(UNAVAILABLE);
+  const [totalSupply, setTotalSupply] = useState(UNAVAILABLE);
 
   useEffect(() => {
     if (isLoading) return;
-    if (!isError) {
-      reset({
-        totalSupply,
-        currentBalance,
-        address,
-        to: "",
-        value: "",
-      });
+    if (!Array.isArray(token)) {
+      toast.error("Failed to fetch token information");
+      return;
     }
-  }, [isError, isLoading]);
+
+    const errors = token
+      .map((v) => v.error)
+      .filter((err) => err instanceof Error);
+
+    if (errors.length > 0) {
+      errors.forEach((err) => toast.error(err.message));
+      return;
+    }
+
+    const [decimals, tokenSymbol, totalRawSupply, rawBalance] = token.map(
+      (v) => v.result
+    );
+
+    const currentBalance = formatUnits(
+      rawBalance as bigint,
+      decimals as number
+    );
+    const totalSupply = formatUnits(
+      totalRawSupply as bigint,
+      decimals as number
+    );
+
+    setTokenSymbol(tokenSymbol as string);
+
+    setCurBalance(currentBalance);
+    reset({
+      totalSupply,
+      currentBalance,
+      address,
+      to: "",
+      value: "",
+    });
+  }, [isLoading, error]);
 
   const handleTransaction = (data: TransactionoData) => {
     const { to, value } = data;
@@ -124,21 +123,21 @@ export default function SendTransactionForm({
       setError("value", { message: "Amount must be greater than zero." });
       return;
     }
-    if (amountNum > Number(currentBalance)) {
+    if (amountNum > Number(curBalance)) {
       setError("value", {
-        message: "Amount can not exceed your current balance.",
+        message: "Amount exceeds balance.",
       });
       return;
     }
     if (!isAddress(to)) {
       setError("to", {
-        message: "Recipient address must be a valid ERC20 address.",
+        message: "Invalid ERC20 address.",
       });
       return;
     }
     if (to === address) {
       setError("to", {
-        message: "Recipient address can not be same as your own address.",
+        message: "Recipient address cannot be your own.",
       });
       return;
     }

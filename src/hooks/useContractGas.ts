@@ -1,9 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import { Address, parseUnits } from "viem";
 import { useAccount, usePublicClient } from "wagmi";
 import { abi } from "../constants/abi";
 import { KHUDDITE_TOKEN_ADDRESS } from "../constants/token";
-import { Address, parseUnits } from "viem";
 
 const ESTIMATE_CONTRACT_GAS = "estimateContractGas";
 

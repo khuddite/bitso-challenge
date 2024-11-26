@@ -1,19 +1,26 @@
 import { Button } from "@nextui-org/button";
-import React, { useEffect, useMemo, useState } from "react";
-import { TransactionDetail } from "../../pages/dashboard";
-import { useAccount, useChainId, useGasPrice, usePublicClient } from "wagmi";
-import { KHUDDITE_TOKEN_ADDRESS } from "../../constants/token";
-import { abi } from "../../constants/abi";
-import { formatUnits, parseUnits } from "viem";
-import { useWriteContract } from "wagmi";
-import useReadKhudditeToken from "../../hooks/useReadKhudditeToken";
-import useEthPrice from "../../hooks/useEthPrice";
-import useContractGas from "../../hooks/useContractGas";
-import { toast } from "react-toastify";
-import { Skeleton } from "@nextui-org/skeleton";
-import { UNAVAILABLE } from "../../constants/strings";
 import { Link } from "@nextui-org/link";
+import { Skeleton } from "@nextui-org/skeleton";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { formatUnits, parseUnits } from "viem";
 import { sepolia } from "viem/chains";
+import {
+  useAccount,
+  useChainId,
+  useGasPrice,
+  useReadContract,
+  useWriteContract,
+} from "wagmi";
+import { abi } from "../../constants/abi";
+import { UNAVAILABLE } from "../../constants/strings";
+import {
+  KHUDDITE_TOKEN_ADDRESS,
+  khudditeTokenContract,
+} from "../../constants/token";
+import useContractGas from "../../hooks/useContractGas";
+import useEthPrice from "../../hooks/useEthPrice";
+import { TransactionDetail } from "../../pages/dashboard";
 
 type ConfirmTransactionFormProps = {
   onCancel: () => void;
@@ -45,7 +52,8 @@ export default function ConfirmTransactionForm({
     data: decimals,
     isLoading: isLoadingDecimals,
     error: decimalsError,
-  } = useReadKhudditeToken({
+  } = useReadContract({
+    ...khudditeTokenContract,
     functionName: "decimals",
   });
 
@@ -113,10 +121,10 @@ export default function ConfirmTransactionForm({
 
     if (status === "success") {
       toast.success(`Sent ${value}KT successfully!`);
+      onCancel();
     } else if (status === "error") {
       toast.error(transactionError.message, { position: "top-right" });
     }
-    onCancel();
   }, [status]);
 
   return (

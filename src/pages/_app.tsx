@@ -48,7 +48,7 @@ function MyApp({
           >
             <RainbowKitProvider>
               <NextUIProvider>
-                <ToastContainer />
+                <ToastContainer position="top-right" />
                 {getLayout(<Component />)}
               </NextUIProvider>
             </RainbowKitProvider>

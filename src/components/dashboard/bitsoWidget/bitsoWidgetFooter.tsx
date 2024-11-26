@@ -1,14 +1,13 @@
 import { CardFooter } from "@nextui-org/card";
 import { Link } from "@nextui-org/link";
-import React from "react";
 
 export default function BitsoWidgetFooter() {
   return (
-    <CardFooter className="bottom-1 justify-center border-1 rounded-full shadow-sm py-1">
+    <CardFooter className="justify-center py-1 rounded-full shadow-sm bottom-1 border-1">
       <p className="text-tiny">
         Made with ❤️ by{" "}
         <Link
-          className="text-tiny text-blue-500"
+          className="text-blue-500 text-tiny"
           href="https://github.com/khuddite"
           target="_blank"
           underline="hover"

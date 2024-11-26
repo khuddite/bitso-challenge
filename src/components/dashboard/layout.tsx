@@ -1,9 +1,9 @@
 import { Card, CardBody } from "@nextui-org/card";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import React from "react";
 import BitsoWidgetFooter from "./bitsoWidget/bitsoWidgetFooter";
 import BitsoWidgetHeader from "./bitsoWidget/bitsoWidgetHeader";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 
 export default function DashboardLayout({ children }: React.PropsWithChildren) {
   const { status } = useSession();
@@ -17,7 +17,7 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
   return (
     <div className="flex items-center justify-center w-full h-screen">
       <Card
-        className="w-[400px] h-[720px] align-middle p-2 flex flex-col justify-between"
+        className="w-[360px] h-[720px] align-middle p-2 flex flex-col justify-between"
         radius="lg"
         isFooterBlurred
       >
