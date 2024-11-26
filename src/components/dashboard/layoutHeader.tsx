@@ -1,9 +1,8 @@
 import { CardHeader } from "@nextui-org/card";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
-import React from "react";
 
-export default function BitsoWidgetHeader() {
+export default function DashboardLayoutHeader() {
   return (
     <CardHeader className="flex flex-col items-end gap-2 p-0">
       <ConnectButton showBalance={false} />

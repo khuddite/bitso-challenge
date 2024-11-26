@@ -1,7 +1,7 @@
 import { CardFooter } from "@nextui-org/card";
 import { Link } from "@nextui-org/link";
 
-export default function BitsoWidgetFooter() {
+export default function DashboardLayoutFooter() {
   return (
     <CardFooter className="justify-center py-1 rounded-full shadow-sm bottom-1 border-1">
       <p className="text-tiny">
