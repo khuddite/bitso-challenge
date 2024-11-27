@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-const ETH_PRICE_IN_USD = "ethPriceInUsd";
+export const ETH_PRICE_IN_USD = "ethPriceInUsd";
 
 const useEthPrice = () => {
   return useQuery({
@@ -11,6 +11,7 @@ const useEthPrice = () => {
         "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
       );
       const data = await response.json();
+      console.log("data: ", data);
       return data.ethereum.usd as number;
     },
   });

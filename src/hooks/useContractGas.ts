@@ -5,7 +5,7 @@ import { khudditeTokenContract } from "../constants/token";
 
 const ESTIMATE_CONTRACT_GAS = "estimateContractGas";
 
-type useContractGasProps = {
+export type useContractGasProps = {
   to: Address;
   value: string;
   decimals: unknown;
@@ -15,6 +15,8 @@ const useContractGas = ({ to, value, decimals }: useContractGasProps) => {
   const chainId = useChainId();
   const client = usePublicClient({ chainId });
   const { address } = useAccount();
+
+  console.log("client: ", client, address);
 
   return useQuery({
     queryKey: [ESTIMATE_CONTRACT_GAS, to, value, decimals, address],
