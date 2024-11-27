@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { useSession } from "next-auth/react";
 import mockRouter from "next-router-mock";
-import { beforeAll, describe, expect, it, Mock, vi } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, Mock, vi } from "vitest";
 import createWrapperForHook from "../../../testing/wrappers/createWrapperForHook";
 import Layout from "../layout";
 
@@ -10,7 +10,11 @@ describe("layout", () => {
     vi.mock("next-auth/react");
   });
 
-  it("display header, footer and content as expected", () => {
+  afterAll(() => {
+    vi.resetAllMocks();
+  });
+
+  it("display header, footer and content as expected", async () => {
     const mockSession = {
       status: "authenticated",
     };
@@ -25,10 +29,10 @@ describe("layout", () => {
       }
     );
 
-    expect(screen.getByText("unit testing is fun")).toBeDefined();
+    await screen.findByText("unit testing is fun");
   });
 
-  it("redirects to login page when unauthenticated", () => {
+  it("redirects to login page when unauthenticated", async () => {
     const mockSession = {
       status: "unauthenticated",
     };
@@ -41,6 +45,7 @@ describe("layout", () => {
         wrapper: createWrapperForHook(),
       }
     );
+    await screen.findByText("unit testing is fun");
     expect(mockRouter).toMatchObject({
       asPath: "/login",
     });

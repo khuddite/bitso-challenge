@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { beforeAll, describe, expect, it, Mock, vi } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, Mock, vi } from "vitest";
 
 import { useSession } from "next-auth/react";
 
@@ -12,6 +12,10 @@ describe("login page", () => {
   beforeAll(() => {
     vi.mock("next-auth/react");
   });
+
+  afterAll(() => {
+    vi.resetAllMocks();
+  });
   it("displays welcome texts and connect button as expected", async () => {
     const mockSession = {
       status: "unauthenticated",
@@ -23,7 +27,7 @@ describe("login page", () => {
       wrapper: createWrapperForHook(),
     });
 
-    expect(screen.getByText("Welcome to Bitso Token Manager!")).toBeDefined();
+    await screen.findByText("Welcome to Bitso Token Manager!");
     expect(
       screen.getByText("Get started by connecting your wallet")
     ).toBeDefined();
@@ -49,6 +53,7 @@ describe("login page", () => {
       wrapper: createWrapperForHook(),
     });
 
+    await screen.findByText("Welcome to Bitso Token Manager!");
     expect(mockRouter).toMatchObject({
       asPath: "/dashboard",
     });
@@ -64,7 +69,9 @@ describe("login page", () => {
     render(<Login />, {
       wrapper: createWrapperForHook(),
     });
-    const connectBtn = screen.getByRole("button", { name: "Connect Wallet" });
+    const connectBtn = await screen.findByRole("button", {
+      name: "Connect Wallet",
+    });
 
     // click connect wallet button
     fireEvent.click(connectBtn);

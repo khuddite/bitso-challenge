@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import { formatEther, parseGwei, parseUnits } from "viem";
 import { sepolia } from "viem/chains";
 import {
-  useAccount,
   useChainId,
   useGasPrice,
   useReadContract,
@@ -17,6 +16,7 @@ import { khudditeTokenContract } from "../../../constants/token";
 import useContractGas from "../../../hooks/useContractGas";
 import useEthPrice from "../../../hooks/useEthPrice";
 import { TransactionDetail } from "../../../pages/dashboard";
+import formatGasFee from "../../../utils/formatGasFee";
 
 type ConfirmTransactionFormProps = {
   onCancel: () => void;
@@ -27,7 +27,6 @@ export default function ConfirmTransactionForm({
   onCancel,
   transactionDetails,
 }: ConfirmTransactionFormProps) {
-  const { address } = useAccount();
   const { to, value } = transactionDetails;
   const chainId = useChainId();
   const { writeContract, status, error: transactionError } = useWriteContract();
@@ -151,18 +150,9 @@ export default function ConfirmTransactionForm({
           <p className="font-sans text-sm font-bold">Estimated Network Fee</p>
           <Skeleton isLoaded={!isLoading}>
             <p className="font-semibold text-tiny">
-              {gasFee === UNAVAILABLE
+              {gasFee === UNAVAILABLE || !ethPrice
                 ? UNAVAILABLE
-                : `${Intl.NumberFormat(undefined, {
-                    style: "decimal",
-                    maximumFractionDigits: 6,
-                  }).format(Number(gasFee))} ETH / ${Intl.NumberFormat(
-                    undefined,
-                    {
-                      style: "decimal",
-                      maximumFractionDigits: 2,
-                    }
-                  ).format(Number(gasFee) * (ethPrice as number))} USD`}
+                : formatGasFee(gasFee, ethPrice)}
             </p>
           </Skeleton>
         </div>

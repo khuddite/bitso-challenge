@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import { getAddress } from "viem";
-import { beforeAll, describe, expect, it, vi } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import createWrapperForHook from "../../testing/wrappers/createWrapperForHook";
 import useContractGas from "../useContractGas";
 
@@ -23,6 +23,10 @@ describe("useContractGas", () => {
         })),
       };
     });
+  });
+
+  afterAll(() => {
+    vi.resetAllMocks();
   });
 
   it("should work as expected", async () => {

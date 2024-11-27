@@ -22,27 +22,23 @@ type SendTransactionFormProps = {
 export default function SendTransactionForm({
   onSubmit,
 }: SendTransactionFormProps) {
-  const {
-    watch,
-    control,
-    reset,
-    handleSubmit,
-    setValue,
-    setError,
-    formState: { errors },
-  } = useForm<TransactionoData>({
-    resolver: zodResolver(transactionSchema),
-  });
+  const { watch, control, reset, handleSubmit, setValue, setError } =
+    useForm<TransactionoData>({
+      resolver: zodResolver(transactionSchema),
+      defaultValues: {
+        totalSupply: UNAVAILABLE,
+        currentBalance: UNAVAILABLE,
+        address: UNAVAILABLE,
+        to: "",
+        value: "",
+      },
+    });
 
   const amount = watch("value");
 
   const { address } = useAccount();
 
-  const {
-    data: token,
-    isLoading,
-    error,
-  } = useReadContracts({
+  const { data: token, isLoading } = useReadContracts({
     contracts: [
       {
         ...khudditeTokenContract,
@@ -106,7 +102,7 @@ export default function SendTransactionForm({
       to: "",
       value: "",
     });
-  }, [isLoading, error]);
+  }, [isLoading]);
 
   const handleTransaction = (data: TransactionoData) => {
     const { to, value } = data;

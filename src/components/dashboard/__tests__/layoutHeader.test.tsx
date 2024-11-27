@@ -13,7 +13,7 @@ describe("layoutHeader", () => {
       { wrapper: createWrapperForHook() }
     );
 
-    const img = screen.getByRole("img");
+    const img = await screen.findByRole("img");
     expect(img.getAttribute("src")).toContain("bitso.png");
     expect(img.getAttribute("width")).toBe("120");
     expect(img.getAttribute("height")).toBe("120");

@@ -12,7 +12,7 @@ describe("layoutFooter", () => {
       { wrapper: createWrapperForHook() }
     );
 
-    expect(screen.getByText(/Made with/)).toBeDefined();
+    await screen.findByText(/Made with/);
 
     expect(screen.getByRole("link", { name: "Jason Stroud" })).toBeDefined();
 
