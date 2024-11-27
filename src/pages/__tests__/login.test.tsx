@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeAll, describe, expect, it, Mock, vi } from "vitest";
 
 import { useSession } from "next-auth/react";
@@ -52,5 +52,36 @@ describe("login page", () => {
     expect(mockRouter).toMatchObject({
       asPath: "/dashboard",
     });
+  });
+
+  it("connect wallet button displays a wallet connector modal", async () => {
+    const mockSession = {
+      status: "unauthenticated",
+    };
+
+    (useSession as Mock).mockReturnValue(mockSession);
+
+    render(<Login />, {
+      wrapper: createWrapperForHook(),
+    });
+    const connectBtn = screen.getByRole("button", { name: "Connect Wallet" });
+
+    // click connect wallet button
+    fireEvent.click(connectBtn);
+    expect(
+      screen.getByRole("heading", { name: "Connect a Wallet" })
+    ).toBeDefined();
+
+    expect(screen.getByText("What is a Wallet?")).toBeDefined();
+
+    const closeBtn = screen.getByRole("button", { name: "Close" });
+
+    // close out the wallet connector modal
+    fireEvent.click(closeBtn);
+    expect(
+      screen.queryByRole("heading", { name: "Connect a Wallet" })
+    ).toBeNull();
+
+    expect(screen.queryByRole("What is a Wallet?")).toBeNull();
   });
 });

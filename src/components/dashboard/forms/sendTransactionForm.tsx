@@ -36,7 +36,6 @@ export default function SendTransactionForm({
 
   const amount = watch("value");
 
-  console.log("amount: ", amount);
   const { address } = useAccount();
 
   const {

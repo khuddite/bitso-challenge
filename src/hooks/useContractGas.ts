@@ -16,8 +16,6 @@ const useContractGas = ({ to, value, decimals }: useContractGasProps) => {
   const client = usePublicClient({ chainId });
   const { address } = useAccount();
 
-  console.log("client: ", client, address);
-
   return useQuery({
     queryKey: [ESTIMATE_CONTRACT_GAS, to, value, decimals, address],
     queryFn: async () => {
