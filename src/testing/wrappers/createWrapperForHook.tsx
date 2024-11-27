@@ -1,3 +1,5 @@
+import { NextUIProvider } from "@nextui-org/system";
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { sepolia } from "viem/chains";
 import { createConfig, http, WagmiProvider } from "wagmi";
@@ -24,7 +26,11 @@ export default function () {
   });
   return ({ children }: React.PropsWithChildren) => (
     <WagmiProvider config={mockConfig}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <NextUIProvider>
+        <QueryClientProvider client={queryClient}>
+          <RainbowKitProvider>{children}</RainbowKitProvider>
+        </QueryClientProvider>
+      </NextUIProvider>
     </WagmiProvider>
   );
 }

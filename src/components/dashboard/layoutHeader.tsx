@@ -13,7 +13,7 @@ export default function DashboardLayoutHeader() {
       >
         <Image
           src="/bitso.png"
-          alt="Next.js logo"
+          alt="Bitso logo"
           width={120}
           height={120}
           priority

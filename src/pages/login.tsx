@@ -1,11 +1,11 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import type { NextPage } from "next";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 
-const Home: NextPage = () => {
+const Login: NextPage = () => {
   const router = useRouter();
   const { status } = useSession();
 
@@ -26,7 +26,7 @@ const Home: NextPage = () => {
         <Image
           className="self-center mb-4"
           src="/bitso.png"
-          alt="Next.js logo"
+          alt="Bitso logo"
           width={240}
           height={240}
           priority
@@ -43,4 +43,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Login;
