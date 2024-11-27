@@ -1,10 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import { getSession, useSession } from "next-auth/react";
 import { getToken } from "next-auth/jwt";
+import { NextRequest, NextResponse } from "next/server";
 import ROUTES from "./constants/routes";
-import { notFound } from "next/navigation";
-// 1. Specify protected and public routes
+
+// Specify protected and public routes
 const protectedRoutes = [ROUTES.DASHBOARD];
 const publicRoutes = [ROUTES.LOGIN];
 
