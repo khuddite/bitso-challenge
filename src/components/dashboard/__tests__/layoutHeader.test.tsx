@@ -1,7 +1,7 @@
 import { Card } from "@nextui-org/card";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import createWrapperForHook from "../../../testing/wrappers/createWrapperForHook";
+import createWrapperForProviders from "../../../testing/wrappers/createWrapperForProviders";
 import DashboardLayoutHeader from "../layoutHeader";
 
 describe("layoutHeader", () => {
@@ -10,7 +10,7 @@ describe("layoutHeader", () => {
       <Card>
         <DashboardLayoutHeader />
       </Card>,
-      { wrapper: createWrapperForHook() }
+      { wrapper: createWrapperForProviders() }
     );
 
     const img = await screen.findByRole("img");

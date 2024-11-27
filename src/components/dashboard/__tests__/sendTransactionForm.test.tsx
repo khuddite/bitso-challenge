@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { formatUnits } from "viem";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
-import createWrapperForHook from "../../../testing/wrappers/createWrapperForHook";
+import createWrapperForProviders from "../../../testing/wrappers/createWrapperForProviders";
 import SendTransactionForm from "../forms/sendTransactionForm";
 
 describe("sendTransactionForm", () => {
@@ -51,7 +51,7 @@ describe("sendTransactionForm", () => {
     });
 
     render(<SendTransactionForm onSubmit={mockedOnSubmit} />, {
-      wrapper: createWrapperForHook(),
+      wrapper: createWrapperForProviders(),
     });
 
     await waitFor(() =>
@@ -73,7 +73,7 @@ describe("sendTransactionForm", () => {
     const mockedOnSubmit = vi.fn();
 
     render(<SendTransactionForm onSubmit={mockedOnSubmit} />, {
-      wrapper: createWrapperForHook(),
+      wrapper: createWrapperForProviders(),
     });
 
     const sendBtn = screen.getByRole("button", { name: "Send" });

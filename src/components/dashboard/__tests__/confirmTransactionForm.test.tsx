@@ -3,7 +3,7 @@ import { formatEther, getAddress, parseGwei } from "viem";
 import { sepolia } from "viem/chains";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import generateRegexForMultilineText from "../../../testing/utils/generateRegexForMultilineText";
-import createWrapperForHook from "../../../testing/wrappers/createWrapperForHook";
+import createWrapperForProviders from "../../../testing/wrappers/createWrapperForProviders";
 import formatGasFee from "../../../utils/formatGasFee";
 import ConfirmTransactionForm from "../forms/confirmTransactionForm";
 
@@ -80,7 +80,7 @@ describe("confirmTransactionForm", () => {
         transactionDetails={mockedTransactionDetails}
       />,
       {
-        wrapper: createWrapperForHook(),
+        wrapper: createWrapperForProviders(),
       }
     );
   };

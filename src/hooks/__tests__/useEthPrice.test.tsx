@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import createWrapperForHook from "../../testing/wrappers/createWrapperForHook";
+import createWrapperForProviders from "../../testing/wrappers/createWrapperForProviders";
 import useEthPrice from "../useEthPrice";
 
 import { afterEach } from "node:test";
@@ -13,7 +13,7 @@ describe("useEthPrice", () => {
 
   it("should work as expected", async () => {
     const { result } = renderHook(() => useEthPrice(), {
-      wrapper: createWrapperForHook(),
+      wrapper: createWrapperForProviders(),
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBe(3500);

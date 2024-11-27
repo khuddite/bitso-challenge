@@ -3,7 +3,7 @@ import { afterAll, beforeAll, describe, expect, it, Mock, vi } from "vitest";
 
 import { useSession } from "next-auth/react";
 
-import createWrapperForHook from "../../testing/wrappers/createWrapperForHook";
+import createWrapperForProviders from "../../testing/wrappers/createWrapperForProviders";
 import Login from "../login";
 
 import mockRouter from "next-router-mock";
@@ -24,7 +24,7 @@ describe("login page", () => {
     (useSession as Mock).mockReturnValue(mockSession);
 
     render(<Login />, {
-      wrapper: createWrapperForHook(),
+      wrapper: createWrapperForProviders(),
     });
 
     await screen.findByText("Welcome to Bitso Token Manager!");
@@ -50,7 +50,7 @@ describe("login page", () => {
     (useSession as Mock).mockReturnValue(mockSession);
 
     render(<Login />, {
-      wrapper: createWrapperForHook(),
+      wrapper: createWrapperForProviders(),
     });
 
     await screen.findByText("Welcome to Bitso Token Manager!");
@@ -67,7 +67,7 @@ describe("login page", () => {
     (useSession as Mock).mockReturnValue(mockSession);
 
     render(<Login />, {
-      wrapper: createWrapperForHook(),
+      wrapper: createWrapperForProviders(),
     });
     const connectBtn = await screen.findByRole("button", {
       name: "Connect Wallet",

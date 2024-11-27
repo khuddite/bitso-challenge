@@ -1,1 +1,1 @@
-export const UNAVAILABLE = "Unavaillable";
+export const UNAVAILABLE = "Unavailable";

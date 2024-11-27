@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { useSession } from "next-auth/react";
 import mockRouter from "next-router-mock";
 import { afterAll, beforeAll, describe, expect, it, Mock, vi } from "vitest";
-import createWrapperForHook from "../../../testing/wrappers/createWrapperForHook";
+import createWrapperForProviders from "../../../testing/wrappers/createWrapperForProviders";
 import Layout from "../layout";
 
 describe("layout", () => {
@@ -25,7 +25,7 @@ describe("layout", () => {
         <p>unit testing is fun</p>
       </Layout>,
       {
-        wrapper: createWrapperForHook(),
+        wrapper: createWrapperForProviders(),
       }
     );
 
@@ -42,7 +42,7 @@ describe("layout", () => {
         <p>unit testing is fun</p>
       </Layout>,
       {
-        wrapper: createWrapperForHook(),
+        wrapper: createWrapperForProviders(),
       }
     );
     await screen.findByText("unit testing is fun");

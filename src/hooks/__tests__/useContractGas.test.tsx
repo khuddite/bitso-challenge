@@ -1,7 +1,7 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import { getAddress } from "viem";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
-import createWrapperForHook from "../../testing/wrappers/createWrapperForHook";
+import createWrapperForProviders from "../../testing/wrappers/createWrapperForProviders";
 import useContractGas from "../useContractGas";
 
 describe("useContractGas", () => {
@@ -40,7 +40,7 @@ describe("useContractGas", () => {
     mockEstimatedContractGas.mockReturnValue(mockedGas);
 
     const { result } = renderHook(() => useContractGas({ ...mockParams }), {
-      wrapper: createWrapperForHook(),
+      wrapper: createWrapperForProviders(),
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));

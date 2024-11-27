@@ -1,7 +1,7 @@
 import { Card } from "@nextui-org/card";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import createWrapperForHook from "../../../testing/wrappers/createWrapperForHook";
+import createWrapperForProviders from "../../../testing/wrappers/createWrapperForProviders";
 import DashboardLayoutFooter from "../layoutFooter";
 describe("layoutFooter", () => {
   it("should display name with link as expected", async () => {
@@ -9,7 +9,7 @@ describe("layoutFooter", () => {
       <Card>
         <DashboardLayoutFooter />
       </Card>,
-      { wrapper: createWrapperForHook() }
+      { wrapper: createWrapperForProviders() }
     );
 
     await screen.findByText(/Made with/);
